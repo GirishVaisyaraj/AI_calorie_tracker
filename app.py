@@ -15,25 +15,23 @@ tab1, tab2 = st.tabs(["Current Meal", "Historical View"])
 
 with tab1:
     # Input options
-    input_type = st.radio("Input Type:", ["Image", "Text"])
+    uploaded_file = st.file_uploader("Upload an image of your meal (optional):", type=["jpg", "jpeg", "png"])
+    text_description = st.text_area("Enter a description of your meal (optional):")
 
     image = None
-    text_description = None
+    if uploaded_file is not None:
+        image = Image.open(uploaded_file)
+        st.image(image, caption="Uploaded Image.", use_column_width=True)
+        with open("temp_image.jpg", "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        st.session_state.image_path = "temp_image.jpg"
+    else:
+        st.session_state.image_path = None
 
-    if input_type == "Image":
-        uploaded_file = st.file_uploader("Upload an image of your meal:", type=["jpg", "jpeg", "png"])
-        if uploaded_file is not None:
-            image = Image.open(uploaded_file)
-            st.image(image, caption="Uploaded Image.", use_column_width=True)
-            with open("temp_image.jpg", "wb") as f:
-                f.write(uploaded_file.getbuffer())
-            st.session_state.image_path = "temp_image.jpg"
-    elif input_type == "Text":
-        text_description = st.text_area("Enter a description of your meal:")
 
     # Analyze button
     if st.button("Analyze"):
-        if image is None and text_description is None:
+        if uploaded_file is None and not text_description:
             st.error("Please upload an image or enter a text description.")
         else:
             with st.spinner("Analyzing..."):
