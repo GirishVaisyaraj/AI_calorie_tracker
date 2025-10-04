@@ -8,6 +8,10 @@ An open-source, AI-based calorie tracker that can estimate, store, and visualize
 *   **Data Storage:** Log your meals and track your intake over time.
 *   **Visualization:** View your nutritional data through simple and intuitive charts.
 
+## Steps to Run
+* export gemini api key in your env using variable MY_VAR
+* streamlit run app.py
+
 ## To-Do / Future Enhancements
 
 -   [ ] **User Authentication:** Implement user accounts to securely store and manage personal data.
